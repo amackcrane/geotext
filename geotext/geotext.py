@@ -111,7 +111,7 @@ class GeoText(object):
             candidates = [candidate.strip() for candidate in candidates]
         else:
             candidates = [w.strip() for w in text.split(" ")]
-            candidates.extend([" ".join(candidates[i:i+1]) for i in range(len(candidates)-1)])
+            candidates.extend([" ".join(candidates[i:i+2]) for i in range(len(candidates)-1)])
         if debug:
             print(candidates)
         self.countries = [each for each in candidates
