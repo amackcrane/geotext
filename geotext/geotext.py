@@ -103,12 +103,17 @@ class GeoText(object):
 
     index = build_index()
 
-    def __init__(self, text, country=None):
-        city_regex = r"[A-ZÀ-Ú]*[a-zà-ú]+[ \-]?(?:d[a-u].)?(?:[A-ZÀ-Ú]*[a-zà-ú]+)*"
-        candidates = re.findall(city_regex, text)
-        print(candidates)
-        # Removing white spaces from candidates
-        candidates = [candidate.strip() for candidate in candidates]
+    def __init__(self, text, country=None, naive=False, debug=False):
+        if not naive:
+            city_regex = r"[A-ZÀ-Ú]*[a-zà-ú]+[ \-]?(?:d[a-u].)?(?:[A-ZÀ-Ú]*[a-zà-ú]+)*"
+            candidates = re.findall(city_regex, text)
+            # Removing white spaces from candidates
+            candidates = [candidate.strip() for candidate in candidates]
+        else:
+            candidates = [w.strip() for w in text.split(" ")]
+            candidates.extend([" ".join(candidates[i:i+1]) for i in range(len(candidates)-1)])
+        if debug:
+            print(candidates)
         self.countries = [each for each in candidates
                           if each.lower() in self.index.countries]
         self.cities = [each for each in candidates
